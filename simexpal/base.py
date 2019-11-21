@@ -536,6 +536,14 @@ class BuildInfo:
 	def regenerate(self):
 		return self._build_yml.get('regenerate', [])
 
+	def exports_ldso_paths(self):
+		if 'extra_ldso_paths' not in self._build_yml:
+			return []
+		if isinstance(self._build_yml['extra_ldso_paths'],list):
+			return self._build_yml['extra_ldso_paths']
+		assert isinstance(self._build_yml['extra_ldso_paths'], str)
+		return [self._build_yml['extra_ldso_paths']]
+
 class Revision:
 	def __init__(self, cfg, revision_yml):
 		self._cfg = cfg

@@ -136,6 +136,9 @@ class RunManifest:
 		for build_yml in self.yml['builds']:
 			paths.append(os.path.join(build_yml['prefix'], 'lib64'))
 			paths.append(os.path.join(build_yml['prefix'], 'lib'))
+
+			for extra_ldso_path in build_yml['extra_ldso_paths']:
+				paths.append(extra_ldso_path)
 		return paths
 
 	def get_python_paths(self):
@@ -173,7 +176,8 @@ def compile_manifest(run):
 	for build in recursive_builds:
 		builds_yml.append({
 			'prefix': build.prefix_dir,
-			'exports_python': build.info.exports_python
+			'exports_python': build.info.exports_python,
+			'extra_ldso_paths': build.info.exports_ldso_paths
 		})
 
 	# Collect extra arguments from variants
