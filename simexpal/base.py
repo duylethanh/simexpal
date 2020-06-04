@@ -237,6 +237,26 @@ class Config:
 
 		yield from self._experiments.values()
 
+	def get_experiment(self, info, revision, variation):
+		"""
+
+		:param info: ExperimentInfo object
+		:param revision: Revision object
+		:param variation: List of Variant objects
+		:return: Experiment object identified by the input parameters
+		"""
+
+		if not self._experiments_discovered:
+			self._fill_experiments()
+
+		variation = tuple(sorted(variation, key=lambda var: var.name))
+
+		if (info, revision, variation) not in self._experiments:
+			raise RuntimeError("The experiment '{}' with variations '{}' and revision '{}' does not exist".format(
+				info.name, ', '.join([v.name for v in variation]), revision.name if revision is not None else None
+			))
+		return self._experiments[(info, revision, variation)]
+
 	def _fill_runs(self):
 
 		def extract_runs(selection):
