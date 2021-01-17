@@ -1,7 +1,6 @@
 
 import gzip
 import os
-import requests
 import zipfile
 
 from .util import try_mkdir
@@ -21,6 +20,8 @@ repos = {
 }
 
 def download_instance(inst_yml, instances_dir, filename, partial_path, ext):
+	import requests
+
 	repo = inst_yml['repo']
 
 	try_mkdir(instances_dir)
